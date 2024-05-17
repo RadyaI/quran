@@ -65,7 +65,7 @@ export default {
     },
     mounted() {
         this.getSurat()
-        console.log(this.baru_dibaca.nama_latin)
+        // console.log(this.baru_dibaca.nama_latin)
     },
     methods: {
         displaySurah() {
