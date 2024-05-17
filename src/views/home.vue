@@ -8,13 +8,13 @@
         </div>
         <div class="baru_dibaca">
             <p>Baru dibaca</p>
-            <div class="card">
-                <div class="nomor">1</div>
+            <div class="card" @click="baca(baru_dibaca.nomor)">
+                <div class="nomor">{{ baru_dibaca.nomor }}</div>
                 <div class="surat">
-                    <div class="nama_surat">Al-Fatihah</div>
-                    <div class="terjemahan"><small>Pembukaan</small></div>
+                    <div class="nama_surat">{{ baru_dibaca.nama_latin }}</div>
+                    <div class="terjemahan"><small>{{baru_dibaca.arti}}</small></div>
                 </div>
-                <div class="ayat">7 Ayat</div>
+                <div class="ayat">{{baru_dibaca.jumlah_ayat}} Ayat</div>
             </div>
         </div>
         <div class="menu">
@@ -22,6 +22,7 @@
             <div class="disimpan" :class="{ 'selected': this.currentDisplay == 'disimpan' }" @click="displayDisimpan">
                 Disimpan</div>
         </div>
+        <p align="center" v-if="this.currentDisplay == 'disimpan'" style="margin-top: 20px;">Ups belum bisa 😀</p>
         <div class="list_surat" v-if="this.currentDisplay == 'surat'">
 
             <div class="card" v-for="(i, no) in filterSurat" :key="no" @click="baca(i.nomor)">
@@ -50,6 +51,7 @@ export default {
             surat_list: {},
             search: '',
             currentDisplay: 'surat',
+            baru_dibaca: JSON.parse(localStorage.getItem('baru_dibaca'))
         }
     },
     computed: {
@@ -63,7 +65,7 @@ export default {
     },
     mounted() {
         this.getSurat()
-        console.log(process.env.VUE_APP_KEY)
+        console.log(this.baru_dibaca.nama_latin)
     },
     methods: {
         displaySurah() {
@@ -82,6 +84,19 @@ export default {
             )
         },
         baca(i) {
+            axios.get(`https://quran-api.santrikoding.com/api/surah/${i}`)
+                .then(
+                    (response) => {
+                        // console.log(response.data)
+                        const data = {
+                            nomor: response.data.nomor,
+                            nama_latin: response.data.nama_latin,
+                            arti: response.data.arti,
+                            jumlah_ayat: response.data.jumlah_ayat,
+                        }
+                        localStorage.setItem('baru_dibaca', JSON.stringify(data))
+                    }
+                )
             this.$router.push(`/baca/${i}`)
         }
     }
@@ -263,10 +278,6 @@ export default {
     align-items: center;
     margin-right: 10px;
     width: 100%;
-}
-
-.footer {
-
 }
 
 .selected {
