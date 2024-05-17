@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="title">
-            <h1>Quran.Net</h1>
+            <h1>MyAlquran</h1>
         </div>
         <div class="search">
             <input type="text" placeholder="Mau baca surah apa?..." v-model="search">
