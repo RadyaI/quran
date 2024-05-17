@@ -8,7 +8,7 @@
         </div>
         <div class="baru_dibaca">
             <p>Baru dibaca</p>
-            <div class="card" @click="baca(baru_dibaca.nomor)">
+            <div class="card" @click="baca(baru_dibaca.nomor)" v-if="baru_dibaca">
                 <div class="nomor">{{ baru_dibaca.nomor }}</div>
                 <div class="surat">
                     <div class="nama_surat">{{ baru_dibaca.nama_latin }}</div>
